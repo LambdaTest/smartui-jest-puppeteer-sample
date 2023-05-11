@@ -19,7 +19,7 @@ const capabilities = {
         'network': true,
         'video': true,
         'console': true,
-        'smartUIProjectName': "Testing Jest Puppeteer Sample - 001"
+        'smartUIProjectName': "Puppeteer-Project"
     }
 };
 
@@ -43,10 +43,13 @@ describe('LambdaTest SmartUI Puppeteer Jest Sample', () => {
         const title = await page.title();
 
         try {
+            console.log("taking webpage screenshot")
+            await page.evaluate((_) => {},
+            `lambdatest_action: ${JSON.stringify({ action: 'smartui.takeScreenshot', arguments: { fullPage: true, screenshotName: 'webpage' }
+            })}`);
+
             expect(title).toEqual('Next-Generation Mobile Apps and Cross Browser Testing Cloud | LambdaTest');
             await page.evaluate(_ => { }, `lambdatest_action: ${JSON.stringify({ action: 'setTestStatus', arguments: { status: 'passed', remark: 'Title matched' } })}`)
-            await page.evaluate((_) => { },
-                `lambdatest_action: ${JSON.stringify({ action: "smartui.takeScreenshot", arguments: { fullPage: false, screenshotName: "<Your Screenshot Name>" } })}`);
         } catch {
             await page.evaluate(_ => { }, `lambdatest_action: ${JSON.stringify({ action: 'setTestStatus', arguments: { status: 'failed', remark: 'Title not matched' } })}`)
         }
